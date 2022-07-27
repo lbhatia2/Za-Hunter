@@ -17,16 +17,24 @@ struct ContentView: View {
             latitude: 42.0558, longitude: -87.6743),
         span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
     var body: some View {
-        Map(coordinateRegion: $region,
-            interactionModes: .all,
-            showsUserLocation: true,
-            userTrackingMode: $userTrackingMode,
-            annotationItems: places) {place in MapPin(coordinate: place.annotation.coordinate)
-            
-        }
-            .onAppear(){
-                preformSearch(item: "Pizza ")
+        NavigationView{
+            Map(coordinateRegion: $region,
+                interactionModes: .all,
+                showsUserLocation: true,
+                userTrackingMode: $userTrackingMode,
+                annotationItems: places) {place in MapAnnotation(coordinate: place.annotation.coordinate) {
+                NavigationLink(destination: LocationDetailsView(selectedMapItem: place.mapItem)) {
+                    Image("pizza")
+                }
             }
+        }
+            
+                .onAppear(){
+                    preformSearch(item: "Pizza ")
+                }
+                .navigationTitle("PizZa Hunter")
+                .navigationBarTitleDisplayMode(.inline)
+        }
     }
     
     func preformSearch(item: String) {

@@ -6,15 +6,20 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct LocationDetailsView: View {
+    var selectedMapItem: MKMapItem
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text(selectedMapItem.name!)
+                .font(.title)
+        }
     }
 }
 
 struct LocationDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        LocationDetailsView()
+        LocationDetailsView(selectedMapItem: MKMapItem())
     }
 }
