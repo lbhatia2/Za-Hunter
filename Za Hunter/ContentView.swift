@@ -32,7 +32,7 @@ struct ContentView: View {
                 .onAppear(){
                     preformSearch(item: "Pizza ")
                 }
-                .navigationTitle("PizZa Hunter")
+                .navigationTitle("Pizza Hunter")
                 .navigationBarTitleDisplayMode(.inline)
         }
     }
