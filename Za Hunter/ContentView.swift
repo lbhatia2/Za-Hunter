@@ -2,47 +2,50 @@
 //  ContentView.swift
 //  Za Hunter
 //
-//  Created by Lina Bhatia on 7/27/22.
+//  Created by Lina Bhatia on 27/07/2022.
 //
 
 import SwiftUI
 import MapKit
 
 struct ContentView: View {
-    @State private var places = [Place]()
-    @State private var userTrackingMode: MapUserTrackingMode = .follow
-    @StateObject var locationManager = LocationManager()
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(
-            latitude: 42.0558, longitude: -87.6743),
-        span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05))
+            latitude: 42.0558,
+            longitude: -87.6743),
+        span: MKCoordinateSpan(
+            latitudeDelta: 0.05, longitudeDelta: 0.05)
+    )
+    @StateObject var locationManager = LocationManager()
+    @State private var userTrackingMode: MapUserTrackingMode = .follow
+    @State private var places = [Place]()
     var body: some View {
-        NavigationView{
-            Map(coordinateRegion: $region,
+        NavigationView {
+            Map(
+                coordinateRegion: $region,
                 interactionModes: .all,
                 showsUserLocation: true,
                 userTrackingMode: $userTrackingMode,
-                annotationItems: places) {place in MapAnnotation(coordinate: place.annotation.coordinate) {
-                NavigationLink(destination: LocationDetailsView(selectedMapItem: place.mapItem)) {
-                    Image("pizza")
+                annotationItems: places) { place in
+                    MapAnnotation(coordinate: place.annotation.coordinate) {
+                        NavigationLink(destination: LocationDetailsView(selectedMapItem: place.mapItem)) {
+                            Image("pizza")
+                        }
+                    }
                 }
-            }
-        }
-            
-                .onAppear(){
-                    preformSearch(item: "Pizza ")
+                .onAppear() {
+                    performSearch(item: "Pizza")
                 }
-                .navigationTitle("Pizza Hunter")
+                .navigationTitle("'Za Hunter")
                 .navigationBarTitleDisplayMode(.inline)
         }
     }
-    
-    func preformSearch(item: String) {
+    func performSearch(item: String) {
         let searchRequest = MKLocalSearch.Request()
         searchRequest.naturalLanguageQuery = item
         searchRequest.region = region
         let search = MKLocalSearch(request: searchRequest)
-        search.start {(response, erorr) in
+        search.start { (response, error) in
             if let response = response {
                 for mapItem in response.mapItems {
                     let annotation = MKPointAnnotation()
@@ -53,10 +56,7 @@ struct ContentView: View {
             }
         }
     }
-    
 }
-
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
@@ -68,6 +68,4 @@ struct Place: Identifiable {
     let id = UUID()
     let annotation: MKPointAnnotation
     let mapItem: MKMapItem
-    
 }
-
